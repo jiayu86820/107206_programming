@@ -1,0 +1,117 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="260dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center"
+            android:src="@drawable/addimage"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:gravity="center_vertical|center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/select_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/chooseimage"
+                android:layout_marginLeft="50dp"/>
+
+
+            <Button
+                android:id="@+id/select_ablum"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#00000000"
+                android:text="新增相片"
+                android:textAlignment="center"
+                android:textColor="@color/materialcolorpicker__grey"
+                android:layout_marginRight="70dp"
+                android:textSize="12pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/take_photo"
+                android:layout_width="185dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:background="#00000000"
+                android:text="拍攝照片"
+                android:textAlignment="center"
+                android:textColor="@color/materialcolorpicker__grey"
+                android:textSize="12pt"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/take_photo_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="70dp"
+                android:background="@drawable/takephoto" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:text=" " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/edit_image_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/editimage"
+                android:layout_marginLeft="50dp" />
+
+            <Button
+                android:id="@+id/edit_image"
+                android:layout_width="188dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="90dp"
+                android:background="#00000000"
+                android:text="編輯圖片"
+                android:textAlignment="center"
+                android:textColor="@color/materialcolorpicker__grey"
+                android:textSize="12pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

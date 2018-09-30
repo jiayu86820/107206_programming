@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">TAGGER_編輯相片</string>
+    <string name="no_images">找不到相片</string>
+    <string name="images">%d 相片</string>
+    <string name="save">儲存</string>
+    <string name="apply">套用</string>
+
+    <string name="stickers">貼圖</string>
+    <string name="filter">濾鏡</string>
+    <string name="crop">裁切</string>
+    <string name="rotate">旋轉</string>
+    <string name="text">文字</string>
+    <string name="edit">筆刷</string>
+
+
+
+    <string name="materialcolorpicker__app_name">顏色選擇</string>
+    <string name="materialcolorpicker__descLib">顏色選擇</string>
+    <string name="materialcolorpicker__errHex">16進位轉換錯誤</string>
+    <string name="materialcolorpicker__inputColor">顏色:</string>
+    <string name="materialcolorpicker__btnSelectColor">選擇</string>
+    <string name="saving_image">儲存中請稍後...</string>
+    <string name="input_hint">請輸入文字...</string>
+
+    <string name="no_choose">請選擇一張照片編輯...</string>
+    <string name="auto_newline">自動新增行</string>
+    <string name="save_error">儲存錯誤!</string>
+    <string name="handing">請稍後...</string>
+
+    <string-array name="filters">
+        <item>origin</item>
+        <item>soft</item>
+        <item>black</item>
+        <item>classic</item>
+        <item>gorgeous</item>
+        <item>retro</item>
+        <item>grace</item>
+        <item>film</item>
+        <item>memory</item>
+        <item>yogurt</item>
+        <item>fleeting</item>
+        <item>shine</item>
+        <item>mosaic</item>
+    </string-array>
+
+    <string name="more">更多</string>
+    <string name="exit_without_save">編輯的照片還沒儲存。確定要離開嗎? </string>
+    <string name="confirm">確認</string>
+    <string name="cancel">取消</string>
+
+    <string name="beauty">美膚</string>
+    <string name="smooth">滑順</string>
+    <string name="white_skin">膚質</string>
+
+</resources>
