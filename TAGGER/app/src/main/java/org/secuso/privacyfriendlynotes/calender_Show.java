@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlynotes.code_old;
+package org.secuso.privacyfriendlynotes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,17 +31,21 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.secuso.privacyfriendlynotes.CalenderActivity;
-import org.secuso.privacyfriendlynotes.KeepNoteBridge;
-import org.secuso.privacyfriendlynotes.KeepNoteBridgeTag;
-import org.secuso.privacyfriendlynotes.MainActivity44;
-import org.secuso.privacyfriendlynotes.PhotoNoteActivity;
-import org.secuso.privacyfriendlynotes.R;
-import org.secuso.privacyfriendlynotes.calender_Show;
-import org.secuso.privacyfriendlynotes.event_detail;
+import org.secuso.privacyfriendlynotes.code_old.AboutActivity;
+import org.secuso.privacyfriendlynotes.code_old.AudioNoteActivity;
+import org.secuso.privacyfriendlynotes.code_old.ChecklistNoteActivity;
+import org.secuso.privacyfriendlynotes.code_old.DbAccess;
+import org.secuso.privacyfriendlynotes.code_old.DbContract;
+import org.secuso.privacyfriendlynotes.code_old.HelpActivity;
+import org.secuso.privacyfriendlynotes.code_old.ManageCategoriesActivity;
+import org.secuso.privacyfriendlynotes.code_old.Preferences;
+import org.secuso.privacyfriendlynotes.code_old.RecycleActivity;
+import org.secuso.privacyfriendlynotes.code_old.SettingsActivity;
+import org.secuso.privacyfriendlynotes.code_old.SketchActivity;
+import org.secuso.privacyfriendlynotes.code_old.TextNoteActivity;
 import org.secuso.privacyfriendlynotes.fragments.WelcomeDialog;
 
-public class MainActivity extends AppCompatActivity
+public class calender_Show extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private static final int CAT_ALL = -1;
@@ -53,9 +57,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_calender_show);
 
         //set the OnClickListeners
         //set the OnClickListeners
@@ -63,25 +65,15 @@ public class MainActivity extends AppCompatActivity
 //        findViewById(R.id.fab_checklist).setOnClickListener(this);
         //    findViewById(R.id.fab_audio).setOnClickListener(this);
         //  findViewById(R.id.fab_sketch).setOnClickListener(this);
-        findViewById(R.id.fab_find).setOnClickListener(this);
-        findViewById(R.id.fab_cal).setOnClickListener(this);
-        findViewById(R.id.fab_platform).setOnClickListener(this);
-        findViewById(R.id.fab_editImage).setOnClickListener(this);
+
 
         fabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         //Fill the list from database
         ListView notesList = (ListView) findViewById(R.id.notes_list);
-        notesList.setAdapter(new CursorAdapter(getApplicationContext(), DbAccess.getCursorAllNotes(getBaseContext()), CursorAdapter.FLAG_AUTO_REQUERY) {
+        notesList.setAdapter(new CursorAdapter(getApplicationContext(), DbAccess.getCursorAllNotes2(getBaseContext()), CursorAdapter.FLAG_AUTO_REQUERY) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) context
@@ -254,7 +246,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateList();
-        buildDrawerMenu();
+
+
     }
 
     @Override
@@ -325,62 +318,20 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab_text:
-                startActivity(new Intent(getApplication(), KeepNoteBridge.class));
+                startActivity(new Intent(getApplication(), CalenderActivity.class));
                 fabMenu.collapseImmediately();
                 break;
-            case R.id.fab_checklist:
-                startActivity(new Intent(getApplication(), ChecklistNoteActivity.class));
-                fabMenu.collapseImmediately();
-                break;
-            case R.id.fab_audio:
-                startActivity(new Intent(getApplication(), AudioNoteActivity.class));
-                fabMenu.collapseImmediately();
-                break;
-            case R.id.fab_sketch:
-                startActivity(new Intent(getApplication(), SketchActivity.class));
-                fabMenu.collapseImmediately();
-                break;
-            case R.id.fab_find:
-                startActivity(new Intent(getApplication(), KeepNoteBridgeTag.class));
-                fabMenu.collapseImmediately();
-                break;
-            case R.id.fab_cal:
-                startActivity(new Intent(getApplication(), calender_Show.class));
-                fabMenu.collapseImmediately();
-                break;
-            case R.id.fab_platform:
 
-                break;
-            case R.id.fab_editImage:
-                startActivity(new Intent(getApplication(), MainActivity44.class));
-                fabMenu.collapseImmediately();
-                break;
         }
     }
 
-    private void buildDrawerMenu() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        Menu navMenu = navigationView.getMenu();
-        //reset the menu
-        navMenu.clear();
-        //Inflate the standard stuff
-        MenuInflater menuInflater = new MenuInflater(getApplicationContext());
-        menuInflater.inflate(R.menu.activity_main_drawer, navMenu);
-        //Get the rest from the database
-        Cursor c = DbAccess.getCategories(getBaseContext());
-        while (c.moveToNext()){
-            String name = c.getString(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_NAME));
-            int id = c.getInt(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_ID));
-            navMenu.add(R.id.drawer_group2, id, Menu.NONE, name).setIcon(R.drawable.ic_label_black_24dp);
-        }
-        c.close();
-    }
+
 
     private void updateList() {
         ListView notesList = (ListView) findViewById(R.id.notes_list);
         CursorAdapter adapter = (CursorAdapter) notesList.getAdapter();
         if (selectedCategory == -1) { //show all
-            String selection = DbContract.NoteEntry.COLUMN_TRASH + " = ? AND " + DbContract.NoteEntry.COLUMN_TYPE + "!=?";
+            String selection = DbContract.NoteEntry.COLUMN_TRASH + " = ? AND " + DbContract.NoteEntry.COLUMN_TYPE + "=?";
             String[] selectionArgs = { "0","6" };
             adapter.changeCursor(DbAccess.getCursorAllNotes(getBaseContext(), selection, selectionArgs));
         } else {

@@ -105,6 +105,8 @@
         <activity android:name=".PhotoNoteActivity" />
         <activity android:name=".FindTagFragment" />
         <activity android:name=".insert_event" />
+        <activity android:name=".CalenderActivity" />
+        <activity android:name=".calender_Show" />
 
         <!--选择相册图片Activity-->
         <activity

@@ -25,6 +25,10 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                     DbContract.NoteEntry.COLUMN_CONTENT + " TEXT , " +
                     DbContract.NoteEntry.COLUMN_CATEGORY + " INTEGER, " +
                     DbContract.NoteEntry.COLUMN_TAG + " TEXT , " +
+                    DbContract.NoteEntry.COLUMN_TAG1 + " TEXT , " +
+                    DbContract.NoteEntry.COLUMN_TAG2 + " TEXT , " +
+                    DbContract.NoteEntry.COLUMN_TIME + " TEXT , " +
+                    DbContract.NoteEntry.COLUMN_NOTICE + " TEXT , " +
                     DbContract.NoteEntry.COLUMN_PHOTO + " BLOB , " +
                     DbContract.NoteEntry.COLUMN_TRASH + " INTEGER NOT NULL DEFAULT 0);";
 

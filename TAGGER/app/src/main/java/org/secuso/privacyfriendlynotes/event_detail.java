@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlynotes;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -8,8 +9,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,6 +28,7 @@ public class event_detail extends AppCompatActivity implements View.OnClickListe
     TextView txtDate;
     EditText edtTitle, edtTag1, edtTag2, edtTime, edtNotice;
     Button btnGo, btnSet;
+    Calendar date;
     public static final String BROADCAST_ACTION = "net.macdidi.broadcast01.action.MYBROADCAST02";
     int flag = 1;
     public static DbOpenHelper sqLiteHelper;
@@ -77,40 +81,64 @@ public class event_detail extends AppCompatActivity implements View.OnClickListe
             case R.id.button3:
                 Intent intent = new Intent();
                 intent.setAction(BROADCAST_ACTION);
+                showDateTimePicker();
                                             //如果flag等於1
                    // intent.putExtra("flag", 1);              //傳送名為flag的數值1
                     Calendar c = Calendar.getInstance();       //宣告Calendar,並命名c
                     // flag = 0;                                //設定flag等於0
-                    new TimePickerDialog(event_detail.this, t, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show();  //產生一個TimePickerDialog
+
 
                     break;
 
         }
     }
+    public void showDateTimePicker() {
+        final Calendar currentDate = Calendar.getInstance();
+        date = Calendar.getInstance();
 
-        TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
-            //建立TimePickerDialog監聽,並命名t
-            Intent intent3 = new Intent(BROADCAST_ACTION);                             //宣告Intent,並命名intent
-
+        new DatePickerDialog(event_detail.this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {           //可在此底下做你想做的事
+            public void onDateSet(DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+                date.set(year, monthOfYear, dayOfMonth);
+                new TimePickerDialog(event_detail.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Intent intent3 = new Intent(BROADCAST_ACTION);
+                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        date.set(Calendar.MINUTE, minute);
+                        edtNotice.setText(year+"年"+monthOfYear+"月"+dayOfMonth+"日"+hourOfDay+"點"+minute+"分");
 
-                edtNotice.setText( hourOfDay + ":" + minute );   //設定txtTime顯示出內容
-                Toast.makeText(getApplicationContext(), hourOfDay + "點" + minute + "分" + "將推播訊息給您",
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplication().getApplicationContext(),
+                                0, intent3, PendingIntent.FLAG_UPDATE_CURRENT);//宣告 取得 PendingIntent
+                        AlarmManager alarmManager = (AlarmManager) getApplication().getSystemService(Context.ALARM_SERVICE);//宣告 取得AlarmManager
+
+                        Calendar calendar = Calendar.getInstance();         //宣告 Calendar 並命名calendar
+                        calendar.setTimeInMillis(System.currentTimeMillis());//取得現在時間
+                        calendar.set(calendar.YEAR,year);
+                        calendar.set(calendar.MONTH,monthOfYear);
+                        calendar.set(calendar.DATE,dayOfMonth);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);//取得小時格式
+                        calendar.set(Calendar.MINUTE, minute);          //取得分鐘格式
+
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                0, pendingIntent);//設定定時鬧鐘以RTC_WAKEUP方式呈現
+
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
+            }
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
+    }
+        DatePickerDialog.OnDateSetListener t = new DatePickerDialog.OnDateSetListener() {
+            Intent intent3 = new Intent(BROADCAST_ACTION);                             //宣告Intent,並命名intent
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                edtNotice.setText( i + ":" + i1 );   //設定txtTime顯示出內容
+                Toast.makeText(getApplicationContext(), i + "點" + i1 + "分" + "將推播訊息給您",
                         Toast.LENGTH_LONG).show();//顯示出訊息Toast
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplication().getApplicationContext(),
-                        0, intent3, PendingIntent.FLAG_UPDATE_CURRENT);//宣告 取得 PendingIntent
-                AlarmManager alarmManager = (AlarmManager) getApplication().getSystemService(Context.ALARM_SERVICE);//宣告 取得AlarmManager
-
-                Calendar calendar = Calendar.getInstance();         //宣告 Calendar 並命名calendar
-                calendar.setTimeInMillis(System.currentTimeMillis());//取得現在時間
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);//取得小時格式
-                calendar.set(Calendar.MINUTE, minute);          //取得分鐘格式
-
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        0, pendingIntent);//設定定時鬧鐘以RTC_WAKEUP方式呈現
 
             }
+
+            //建立TimePickerDialog監聽,並命名t
 
         };
 

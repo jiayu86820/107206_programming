@@ -27,7 +27,9 @@ public class DbAccess {
         DbOpenHelper dbHelper = new DbOpenHelper(c);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = { NoteEntry.COLUMN_ID, NoteEntry.COLUMN_TYPE, NoteEntry.COLUMN_NAME, NoteEntry.COLUMN_CONTENT, NoteEntry.COLUMN_CATEGORY,NoteEntry.COLUMN_PHOTO ,NoteEntry.COLUMN_TAG};
+        String[] projection = { NoteEntry.COLUMN_ID, NoteEntry.COLUMN_TYPE, NoteEntry.COLUMN_NAME, NoteEntry.COLUMN_CONTENT,
+                NoteEntry.COLUMN_CATEGORY,NoteEntry.COLUMN_PHOTO ,NoteEntry.COLUMN_TAG,NoteEntry.COLUMN_TAG1,NoteEntry.COLUMN_TAG2
+                ,NoteEntry.COLUMN_TIME,NoteEntry.COLUMN_NOTICE};
         String selection = NoteEntry.COLUMN_ID + " = ?";
         String[] selectionArgs = {"" + id};
 
@@ -56,6 +58,21 @@ public class DbAccess {
         values.put(NoteEntry.COLUMN_CONTENT, content);
         values.put(NoteEntry.COLUMN_TAG,tag);
         values.put(NoteEntry.COLUMN_CATEGORY, category);
+        int id = (int)(long)db.insert(NoteEntry.TABLE_NAME, null, values);
+        db.close();
+        return id;
+    }
+    public static int addNote3(Context c, String name, String tag1,String tag2,String time,String notice, int type){
+        DbOpenHelper dbHelper = new DbOpenHelper(c);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(NoteEntry.COLUMN_TYPE, type);
+        values.put(NoteEntry.COLUMN_NAME, name);
+        values.put(NoteEntry.COLUMN_TAG1, tag1);
+        values.put(NoteEntry.COLUMN_TAG2,tag2);
+        values.put(NoteEntry.COLUMN_TIME,time);
+        values.put(NoteEntry.COLUMN_NOTICE, notice);
         int id = (int)(long)db.insert(NoteEntry.TABLE_NAME, null, values);
         db.close();
         return id;
@@ -212,6 +229,22 @@ public class DbAccess {
                 null,                           // Filter by Group
                 null);                     // Sort Order
     }
+    public static Cursor getCursorAllNotes2(Context c) {
+        DbOpenHelper dbHelper = new DbOpenHelper(c);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selection = NoteEntry.COLUMN_TYPE + " = ?";
+        String[] selectionArgs = { "6" };
+        String[] projection = {NoteEntry.COLUMN_ID, NoteEntry.COLUMN_TYPE, NoteEntry.COLUMN_NAME, NoteEntry.COLUMN_CONTENT};
+
+        return db.query(NoteEntry.TABLE_NAME,   // Table name
+                projection,                     // SELECT
+                selection,                           // Columns for WHERE
+                selectionArgs,                           // Values for WHERE
+                null,                           // Group
+                null,                           // Filter by Group
+                null);                     // Sort Order
+    }
+
 
     /**
      * Returns a cursor over all the notes in the database.
