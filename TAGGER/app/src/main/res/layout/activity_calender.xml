@@ -58,6 +58,12 @@
             android:id="@+id/etNotice"
             android:singleLine="true"
             android:hint="@string/hint_name" />
+
+        <Button
+            android:id="@+id/btnSettime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </LinearLayout>
 
 

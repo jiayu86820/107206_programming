@@ -67,11 +67,12 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     EditText etTag;
     EditText etTag1,etTag2,etTime,etNotice;
     Spinner spinner;
+    Button btnSettime;
 
     private ShareActionProvider mShareActionProvider = null;
 
     private int dayOfMonth, monthOfYear, year;
-
+    Calendar date;
     private boolean edit = false;
     private boolean hasAlarm = false;
     private boolean shouldSave = true;
@@ -79,7 +80,7 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     private int notification_id = -1;
     private int currentCat;
     private final int REQ_CODE_SPEECH_INPUT = 100;
-
+    public static final String BROADCAST_ACTION = "net.macdidi.broadcast01.action.MYBROADCAST02";
     Cursor noteCursor = null;
     Cursor notificationCursor = null;
 
@@ -96,6 +97,10 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         etTime=(EditText)findViewById(R.id.etTime);
         etNotice=(EditText)findViewById(R.id.etNotice);
 
+        btnSettime=(Button)findViewById(R.id.btnSettime);
+        btnSettime.setOnClickListener(this);
+        etTag1.setOnClickListener(this);
+        etTag2.setOnClickListener(this);
         etTag=(EditText)findViewById(R.id.etTag);
         etName = (EditText) findViewById(R.id.etName);
         etContent = (EditText) findViewById(R.id.etContent);
@@ -296,8 +301,68 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
                 shouldSave = true; //safe on exit
                 finish();
                 break;
+            case R.id.btnSettime:
+                shouldSave = false; //safe on exit
+                showDateTimePicker();
+                break;
+            case R.id.etTag1:
+                Intent intent = new Intent(CalenderActivity.this, FindTagFragment.class);
+                String CText = etTag1.getText().toString();
+                Bundle bundle = new Bundle();
+                bundle.putString("detectedText", CText);
+
+                //將Bundle物件assign給intent
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case R.id.etTag2:
+                Intent intent2 = new Intent(CalenderActivity.this, FindTagFragment.class);
+                String CText2 = etTag2.getText().toString();
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("detectedText", CText2);
+
+                //將Bundle物件assign給intent
+                intent2.putExtras(bundle2);
+                startActivity(intent2);
+                break;
             default:
         }
+    }
+    public void showDateTimePicker() {
+        final Calendar currentDate = Calendar.getInstance();
+        date = Calendar.getInstance();
+
+        new DatePickerDialog(CalenderActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+                date.set(year, monthOfYear, dayOfMonth);
+                new TimePickerDialog(CalenderActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Intent intent3 = new Intent(BROADCAST_ACTION);
+                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        date.set(Calendar.MINUTE, minute);
+                        etNotice.setText(year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日"+hourOfDay+"點"+minute+"分");
+
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplication().getApplicationContext(),
+                                0, intent3, PendingIntent.FLAG_UPDATE_CURRENT);//宣告 取得 PendingIntent
+                        AlarmManager alarmManager = (AlarmManager) getApplication().getSystemService(Context.ALARM_SERVICE);//宣告 取得AlarmManager
+
+                        Calendar calendar = Calendar.getInstance();         //宣告 Calendar 並命名calendar
+                        calendar.setTimeInMillis(System.currentTimeMillis());//取得現在時間
+                        calendar.set(calendar.YEAR,year);
+                        calendar.set(calendar.MONTH,monthOfYear);
+                        calendar.set(calendar.DATE,dayOfMonth);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);//取得小時格式
+                        calendar.set(Calendar.MINUTE, minute);          //取得分鐘格式
+
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                                0, pendingIntent);//設定定時鬧鐘以RTC_WAKEUP方式呈現
+
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
+            }
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
     }
 
     private void updateNote(){

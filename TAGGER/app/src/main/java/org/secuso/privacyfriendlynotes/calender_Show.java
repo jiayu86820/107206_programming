@@ -106,6 +106,9 @@ public class calender_Show extends AppCompatActivity
                     case DbContract.NoteEntry.TYPE_PHOTO:
                         iv.setImageResource(R.drawable.ic_photo_library_black_24dp);
                         break;
+                    case DbContract.NoteEntry.TYPE_CALENDER:
+                        iv.setImageResource(R.drawable.ic_event_note_black_24dp);
+                        break;
                     default:
                 }
                 return rowView;
