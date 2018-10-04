@@ -9,20 +9,21 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="264dp"
-        android:layout_height="285dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="240dp"
+        android:layout_height="260dp"
+        android:layout_above="@+id/textView5"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginBottom="31dp"
         android:background="@drawable/fr_note" />
 
     <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="105dp"
-        android:text="新增文字筆記!"
-        android:textSize="30sp" />
+        android:layout_marginBottom="106dp"
+        android:text="寫下你的文字筆記吧"
+        android:textSize="24sp" />
 
 </RelativeLayout>

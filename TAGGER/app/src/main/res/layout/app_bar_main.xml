@@ -65,7 +65,7 @@
             fab:fab_size="mini"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccent"
-            fab:fab_title="行事曆"/>
+            fab:fab_title="提醒工具"/>
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_platform"
             android:layout_width="wrap_content"

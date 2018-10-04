@@ -12,8 +12,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="105dp"
-        android:text="新增照片筆記!"
-        android:textSize="30sp" />
+        android:text="附上照片讓筆記更完整"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/button2"

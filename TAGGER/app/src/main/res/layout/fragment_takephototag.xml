@@ -10,12 +10,12 @@
 
     <Button
         android:id="@+id/btnPic"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="83dp"
-        android:background="@drawable/fr_camera" />
+        android:background="@drawable/scan" />
 
     <Button
         android:id="@+id/btnOk"

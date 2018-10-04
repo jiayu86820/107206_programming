@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="管理功能 ">
+    <item android:title=" 我的筆記管理">
         <menu>
             <item
             android:id="@+id/nav_all"
@@ -19,7 +19,7 @@
 
     </item>
 
-    <item android:title="擴充功能 ">
+    <item android:title=" 交流與備份">
         <menu>
     <group android:checkableBehavior="single"
         android:id="@+id/drawer_group">
