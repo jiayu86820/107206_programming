@@ -8,26 +8,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:background="@color/colorPrimary"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="#FF88C2"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/white" />
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="91dp"
+            android:ems="10"
+            android:hint="輸入文字標記"
+            android:inputType="textPersonName" />
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+        <Button
+            android:id="@+id/btnText"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/editText2"
+            android:layout_marginEnd="43dp"
+            android:background="@drawable/search" />
+
+        <Button
+            android:id="@+id/btnMic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentStart="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="88dp"
+            android:layout_marginTop="186dp"
+            android:background="@drawable/voice" />
+
+        <Button
+            android:id="@+id/btnPic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignTop="@+id/btnMic"
+            android:layout_toStartOf="@+id/btnText"
+            android:background="@drawable/scan" />
 
     </RelativeLayout>
 

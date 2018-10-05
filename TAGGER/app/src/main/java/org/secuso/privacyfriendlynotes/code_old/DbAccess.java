@@ -29,7 +29,7 @@ public class DbAccess {
 
         String[] projection = { NoteEntry.COLUMN_ID, NoteEntry.COLUMN_TYPE, NoteEntry.COLUMN_NAME, NoteEntry.COLUMN_CONTENT,
                 NoteEntry.COLUMN_CATEGORY,NoteEntry.COLUMN_PHOTO ,NoteEntry.COLUMN_TAG,NoteEntry.COLUMN_TAG1,NoteEntry.COLUMN_TAG2
-                ,NoteEntry.COLUMN_TIME,NoteEntry.COLUMN_NOTICE};
+                ,NoteEntry.COLUMN_TAG3,NoteEntry.COLUMN_NOTICE};
         String selection = NoteEntry.COLUMN_ID + " = ?";
         String[] selectionArgs = {"" + id};
 
@@ -62,16 +62,18 @@ public class DbAccess {
         db.close();
         return id;
     }
-    public static int addNote3(Context c, String name, String tag1,String tag2,String time,String notice, int type){
+    public static int addNote3(Context c, String name, String content, String tag1,String tag2,String tag3,String notice, int type){
         DbOpenHelper dbHelper = new DbOpenHelper(c);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(NoteEntry.COLUMN_TYPE, type);
         values.put(NoteEntry.COLUMN_NAME, name);
+        values.put(NoteEntry.COLUMN_CONTENT, content);
         values.put(NoteEntry.COLUMN_TAG1, tag1);
         values.put(NoteEntry.COLUMN_TAG2,tag2);
-        values.put(NoteEntry.COLUMN_TIME,time);
+        values.put(NoteEntry.COLUMN_TAG3,tag3);
+
         values.put(NoteEntry.COLUMN_NOTICE, notice);
         int id = (int)(long)db.insert(NoteEntry.TABLE_NAME, null, values);
         db.close();
@@ -132,7 +134,25 @@ public class DbAccess {
         db.close();
     }
 
+    public static void updateNote3(Context c, int id, String name, String content,String tag1,String tag2,String tag3,String notice) {
+        DbOpenHelper dbHelper = new DbOpenHelper(c);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put(NoteEntry.COLUMN_NAME, name);
+        values.put(NoteEntry.COLUMN_CONTENT, content);
+        values.put(NoteEntry.COLUMN_TAG1, tag1);
+        values.put(NoteEntry.COLUMN_TAG2, tag2);
+        values.put(NoteEntry.COLUMN_TAG3, tag3);
+        values.put(NoteEntry.COLUMN_NOTICE, notice);
+
+
+        String selection = NoteEntry.COLUMN_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        db.update(NoteEntry.TABLE_NAME, values, selection, selectionArgs);
+        db.close();
+    }
     /**
      * Moves a note to trash
      * @param c the current context

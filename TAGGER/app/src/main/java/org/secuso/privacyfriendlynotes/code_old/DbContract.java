@@ -21,7 +21,7 @@ public class DbContract {
         public static final String COLUMN_PHOTO = "photo";
         public static final String COLUMN_TAG1 = "tag1";
         public static final String COLUMN_TAG2 = "tag2";
-        public static final String COLUMN_TIME = "time";
+        public static final String COLUMN_TAG3 = "tag3";
         public static final String COLUMN_NOTICE = "notice";
         public static final int TYPE_TEXT = 1;
         public static final int TYPE_AUDIO = 2;

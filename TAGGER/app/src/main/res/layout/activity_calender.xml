@@ -50,7 +50,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etTime"
+            android:id="@+id/etTag3"
             android:layout_width="185dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -58,7 +58,7 @@
             android:singleLine="true" />
 
         <Button
-            android:id="@+id/btsearch1"
+            android:id="@+id/btn_search1"
             android:layout_width="1dp"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -86,7 +86,7 @@
             android:singleLine="true" />
 
         <Button
-            android:id="@+id/btsearch2"
+            android:id="@+id/btn_search2"
             android:layout_width="1dp"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -115,7 +115,7 @@
             android:singleLine="true" />
 
         <Button
-            android:id="@+id/btsearch3"
+            android:id="@+id/btn_search3"
             android:layout_width="1dp"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -139,6 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:enabled="false"
             android:hint=" "
             android:singleLine="true"
             android:textAlignment="center" />
@@ -163,6 +164,6 @@
     </LinearLayout>
 
 
-    <include layout="@layout/bottom_line"></include>
+    <include layout="@layout/bottom_line3"></include>
 
 </LinearLayout>

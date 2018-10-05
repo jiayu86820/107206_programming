@@ -65,9 +65,9 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     EditText etName;
     EditText etContent;
     EditText etTag;
-    EditText etTag1,etTag2,etTime,etNotice;
+    EditText etTag1,etTag2,etTag3,etNotice;
     Spinner spinner;
-    Button btnSettime;
+    Button btnSettime,btn_search1,btn_search2,btn_search3;
 
     private ShareActionProvider mShareActionProvider = null;
 
@@ -92,19 +92,8 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.btn_delete).setOnClickListener(this);
         findViewById(R.id.btn_save).setOnClickListener(this);
 
-        etTag1=(EditText)findViewById(R.id.etTag1);
-        etTag2=(EditText)findViewById(R.id.etTag2);
-        etTime=(EditText)findViewById(R.id.etTime);
-        etNotice=(EditText)findViewById(R.id.etNotice);
+        init();
 
-        btnSettime=(Button)findViewById(R.id.btnSettime);
-        btnSettime.setOnClickListener(this);
-        etTag1.setOnClickListener(this);
-        etTag2.setOnClickListener(this);
-        etTag=(EditText)findViewById(R.id.etTag);
-        etName = (EditText) findViewById(R.id.etName);
-        etContent = (EditText) findViewById(R.id.etContent);
-        spinner = (Spinner) findViewById(R.id.spinner_category);
 
 
         loadActivity(true);
@@ -132,23 +121,8 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         if (c.getCount() == 0) {
             displayCategoryDialog();
         } else {
-            String[] from = {DbContract.CategoryEntry.COLUMN_NAME};
-            int[] to = {R.id.text1};
-            adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.simple_spinner_item, c, from, to, CursorAdapter.FLAG_AUTO_REQUERY);
-            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Cursor c = (Cursor) parent.getItemAtPosition(position);
-                    currentCat = c.getInt(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_ID));
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
         }
         //fill in values if update
         if (edit) {
@@ -156,20 +130,13 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
             noteCursor = DbAccess.getNote(getBaseContext(), id);
             noteCursor.moveToFirst();
             etName.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_NAME)));
+            etContent.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_CONTENT)));
             etTag1.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_TAG1)));
             etTag2.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_TAG2)));
-            etTime.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_TIME)));
+            etTag3.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_TAG3)));
             etNotice.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_NOTICE)));
             //find the current category and set spinner to that
 
-
-            for (int i = 0; i < adapter.getCount(); i++){
-                c.moveToPosition(i);
-                if (c.getInt(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_ID)) == currentCat) {
-                    spinner.setSelection(i);
-                    break;
-                }
-            }
             //fill the notificationCursor
             notificationCursor = DbAccess.getNotificationByNoteId(getBaseContext(), id);
             hasAlarm = notificationCursor.moveToFirst();
@@ -305,9 +272,9 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
                 shouldSave = false; //safe on exit
                 showDateTimePicker();
                 break;
-            case R.id.etTag1:
+            case R.id.btn_search1:
                 Intent intent = new Intent(CalenderActivity.this, FindTagFragment.class);
-                String CText = etTag1.getText().toString();
+                String CText = etTag3.getText().toString();
                 Bundle bundle = new Bundle();
                 bundle.putString("detectedText", CText);
 
@@ -315,15 +282,25 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-            case R.id.etTag2:
+            case R.id.btn_search2:
                 Intent intent2 = new Intent(CalenderActivity.this, FindTagFragment.class);
-                String CText2 = etTag2.getText().toString();
+                String CText2 = etTag1.getText().toString();
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("detectedText", CText2);
 
                 //將Bundle物件assign給intent
                 intent2.putExtras(bundle2);
                 startActivity(intent2);
+                break;
+            case R.id.btn_search3:
+                Intent intent3 = new Intent(CalenderActivity.this, FindTagFragment.class);
+                String CText3 = etTag2.getText().toString();
+                Bundle bundle3 = new Bundle();
+                bundle3.putString("detectedText", CText3);
+
+                //將Bundle物件assign給intent
+                intent3.putExtras(bundle3);
+                startActivity(intent3);
                 break;
             default:
         }
@@ -367,14 +344,15 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
 
     private void updateNote(){
         fillNameIfEmpty();
-        DbAccess.updateNote(getBaseContext(), id, etName.getText().toString(), etContent.getText().toString(),etTag.getText().toString(), currentCat);
+        DbAccess.updateNote3(getBaseContext(), id, etName.getText().toString(), etContent.getText().toString(),etTag1.getText().toString(),etTag2.getText().toString(),
+                etTag3.getText().toString(),etNotice.getText().toString());
         Toast.makeText(getApplicationContext(), R.string.toast_updated, Toast.LENGTH_SHORT).show();
     }
 
     private void saveNote(){
         fillNameIfEmpty();
-        id = DbAccess.addNote3(getBaseContext(), etName.getText().toString(), etTag1.getText().toString(), etTag2.getText().toString(),
-                etTime.getText().toString(), etNotice.getText().toString(),DbContract.NoteEntry.TYPE_CALENDER);
+        id = DbAccess.addNote3(getBaseContext(), etName.getText().toString(),etContent.getText().toString(), etTag1.getText().toString(), etTag2.getText().toString(),
+                etTag3.getText().toString(), etNotice.getText().toString(),DbContract.NoteEntry.TYPE_CALENDER);
         Toast.makeText(getApplicationContext(), R.string.toast_saved, Toast.LENGTH_SHORT).show();
     }
 
@@ -638,5 +616,27 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
             }
 
         }
+    }
+    public void init(){
+        etTag1=(EditText)findViewById(R.id.etTag1);
+        etTag2=(EditText)findViewById(R.id.etTag2);
+        etTag3=(EditText)findViewById(R.id.etTag3);
+        etNotice=(EditText)findViewById(R.id.etNotice);
+
+        btnSettime=(Button)findViewById(R.id.btnSettime);
+        btn_search1=(Button)findViewById(R.id.btn_search1);
+        btn_search2=(Button)findViewById(R.id.btn_search2);
+        btn_search3=(Button)findViewById(R.id.btn_search3);
+
+        btnSettime.setOnClickListener(this);
+        btn_search1.setOnClickListener(this);
+        btn_search2.setOnClickListener(this);
+        btn_search3.setOnClickListener(this);
+
+        etTag1.setOnClickListener(this);
+        etTag2.setOnClickListener(this);
+        etTag=(EditText)findViewById(R.id.etTag);
+        etName = (EditText) findViewById(R.id.etName);
+        etContent = (EditText) findViewById(R.id.etContent);
     }
 }

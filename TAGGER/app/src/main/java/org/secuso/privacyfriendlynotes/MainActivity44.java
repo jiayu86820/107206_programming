@@ -42,7 +42,6 @@ public class MainActivity44 extends AppCompatActivity implements View.OnClickLis
     private String path;
     private Button btn1,btn2,btn3;
 
-
     private View mTakenPhoto;//拍摄照片用于编辑
     private Uri photoURI = null;
 
@@ -71,6 +70,7 @@ public class MainActivity44 extends AppCompatActivity implements View.OnClickLis
         editImage = findViewById(R.id.edit_image);
         openAblum.setOnClickListener(this);
         editImage.setOnClickListener(this);
+        imgView.setOnClickListener(this);
 
         mTakenPhoto = findViewById(R.id.take_photo);
         mTakenPhoto.setOnClickListener(this);
@@ -101,6 +101,8 @@ public class MainActivity44 extends AppCompatActivity implements View.OnClickLis
                 editImageClick();
                 break;
             case R.id.select_button:
+                selectFromAblum();
+            case R.id.img:
                 selectFromAblum();
                 break;
         }//end switch
