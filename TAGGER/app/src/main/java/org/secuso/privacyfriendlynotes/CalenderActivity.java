@@ -306,6 +306,7 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     public void showDateTimePicker() {
+
         final Calendar currentDate = Calendar.getInstance();
         date = Calendar.getInstance();
 
@@ -321,6 +322,16 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
                         date.set(Calendar.MINUTE, minute);
                         etNotice.setText(year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日"+hourOfDay+"點"+minute+"分");
 
+                        String noticeName =etName.getText().toString();
+                        String noticeContent =etContent.getText().toString();
+
+                        intent3.putExtra("InfoName",noticeName);
+                        intent3.putExtra("InfoContent",noticeContent);
+
+
+                        //將Bundle物件assign給intent
+
+
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplication().getApplicationContext(),
                                 0, intent3, PendingIntent.FLAG_UPDATE_CURRENT);//宣告 取得 PendingIntent
                         AlarmManager alarmManager = (AlarmManager) getApplication().getSystemService(Context.ALARM_SERVICE);//宣告 取得AlarmManager
@@ -335,11 +346,15 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
 
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                                 0, pendingIntent);//設定定時鬧鐘以RTC_WAKEUP方式呈現
+                        Toast.makeText(getApplicationContext(), year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日"+hourOfDay+"點"+minute+"分" + "將推播訊息給您",
+                                Toast.LENGTH_LONG).show();//顯示出訊息Toast
+
 
                     }
                 }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false).show();
             }
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
+
     }
 
     private void updateNote(){

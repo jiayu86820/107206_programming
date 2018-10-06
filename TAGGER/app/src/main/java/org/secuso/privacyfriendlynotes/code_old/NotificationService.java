@@ -1,10 +1,12 @@
 package org.secuso.privacyfriendlynotes.code_old;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import org.secuso.privacyfriendlynotes.R;
@@ -58,12 +60,15 @@ public class NotificationService extends IntentService {
 
             PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext());
-            mBuilder.setSmallIcon(R.mipmap.ic_notification)
+            mBuilder.setSmallIcon(R.drawable.fr_note)
+                    .setLargeIcon(BitmapFactory.decodeResource(NotificationService.this.getResources(), R.mipmap.ic_launcher))
                     .setColor(getResources().getColor(R.color.colorPrimary))
                     .setContentTitle(name)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
             // Sets an ID for the notification
+            mBuilder.setDefaults(Notification.DEFAULT_ALL);
+
             NotificationManager mNotifyMgr = (NotificationManager) getSystemService(getBaseContext().NOTIFICATION_SERVICE);
             mNotifyMgr.notify(notification_id, mBuilder.build());
             cNote.close();
