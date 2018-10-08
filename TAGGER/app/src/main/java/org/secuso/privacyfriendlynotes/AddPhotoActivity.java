@@ -16,10 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.secuso.privacyfriendlynotes.code_old.DbAccess;
-import org.secuso.privacyfriendlynotes.code_old.DbContract;
 import org.secuso.privacyfriendlynotes.code_old.DbOpenHelper;
 import org.secuso.privacyfriendlynotes.code_old.MainActivity;
 
@@ -27,10 +26,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class MainActivity3 extends AppCompatActivity implements View.OnClickListener{
+public class AddPhotoActivity extends AppCompatActivity implements View.OnClickListener{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
-            Intent intent = new Intent(MainActivity3.this, MainActivity.class);
+            Intent intent = new Intent(AddPhotoActivity.this, MainActivity.class);
             startActivity(intent);
             this.finish();
             return true;
@@ -41,7 +40,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
     EditText edtTag, edtContent;
     Button btnChoose, btnAdd, btnList, btnFind;
     ImageView imageView;
-
+    Spinner spinner;
     final int REQUEST_CODE_GALLERY = 999;
 
     public static DbOpenHelper sqLiteHelper;
@@ -56,6 +55,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         }
 
         init();
+
         btnAdd.setOnClickListener(this);
 
 
@@ -63,7 +63,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 ActivityCompat.requestPermissions(
-                        MainActivity3.this,
+                        AddPhotoActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_GALLERY
                 );
@@ -131,13 +131,13 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        DbAccess.addNote2(
+      /*  DbAccess.addNote2(
                 getBaseContext(),
                 edtTag.getText().toString(),
                 edtContent.getText().toString(),
                 imageViewToByte(imageView),
                 DbContract.NoteEntry.TYPE_PHOTO
-        );
+        );*/
         Toast.makeText(getApplicationContext(), "Added successfully!", Toast.LENGTH_SHORT).show();
         edtTag.setText("");
         edtContent.setText("");

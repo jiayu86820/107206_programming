@@ -34,11 +34,10 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import org.secuso.privacyfriendlynotes.CalenderActivity;
 import org.secuso.privacyfriendlynotes.KeepNoteBridge;
 import org.secuso.privacyfriendlynotes.KeepNoteBridgeTag;
-import org.secuso.privacyfriendlynotes.MainActivity44;
+import org.secuso.privacyfriendlynotes.PhotoEditor;
 import org.secuso.privacyfriendlynotes.PhotoNoteActivity;
 import org.secuso.privacyfriendlynotes.R;
 import org.secuso.privacyfriendlynotes.calender_Show;
-import org.secuso.privacyfriendlynotes.event_detail;
 import org.secuso.privacyfriendlynotes.fragments.WelcomeDialog;
 
 public class MainActivity extends AppCompatActivity
@@ -352,7 +351,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.fab_editImage:
-                startActivity(new Intent(getApplication(), MainActivity44.class));
+                startActivity(new Intent(getApplication(), PhotoEditor.class));
                 fabMenu.collapseImmediately();
                 break;
         }

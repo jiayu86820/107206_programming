@@ -25,7 +25,7 @@ import com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity;
 
 import java.io.File;
 
-public class MainActivity44 extends AppCompatActivity implements View.OnClickListener {
+public class PhotoEditor extends AppCompatActivity implements View.OnClickListener {
     public static final int REQUEST_PERMISSON_SORAGE = 1;
     public static final int REQUEST_PERMISSON_CAMERA = 2;
 
@@ -33,7 +33,7 @@ public class MainActivity44 extends AppCompatActivity implements View.OnClickLis
     public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
     public static final int ACTION_STICKERS_IMAGE = 10;
-    private MainActivity44 context;
+    private PhotoEditor context;
     private ImageView imgView;
     private View openAblum;
     private View editImage;//
@@ -173,8 +173,8 @@ public class MainActivity44 extends AppCompatActivity implements View.OnClickLis
     }
 
     private void openAblum() {
-        MainActivity44.this.startActivityForResult(new Intent(
-                        MainActivity44.this, SelectPictureActivity.class),
+        PhotoEditor.this.startActivityForResult(new Intent(
+                        PhotoEditor.this, SelectPictureActivity.class),
                 SELECT_GALLERY_IMAGE_CODE);
     }
 
