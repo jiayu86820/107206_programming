@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -28,16 +29,24 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.OpenFileActivityOptions;
+import com.google.android.gms.plus.Plus;
 
 import org.secuso.privacyfriendlynotes.CalenderActivity;
 import org.secuso.privacyfriendlynotes.KeepNoteBridge;
 import org.secuso.privacyfriendlynotes.KeepNoteBridgeTag;
-import org.secuso.privacyfriendlynotes.PhotoEditor;
+import org.secuso.privacyfriendlynotes.MainActivity44;
 import org.secuso.privacyfriendlynotes.PhotoNoteActivity;
 import org.secuso.privacyfriendlynotes.R;
 import org.secuso.privacyfriendlynotes.calender_Show;
+import org.secuso.privacyfriendlynotes.event_detail;
 import org.secuso.privacyfriendlynotes.fragments.WelcomeDialog;
 
 public class MainActivity extends AppCompatActivity
@@ -49,13 +58,26 @@ public class MainActivity extends AppCompatActivity
 
     private int selectedCategory = CAT_ALL; //ID of the currently selected category. Defaults to "all"
 
+
+    private static final String TAG = "Google Drive Activity";
+
+    public static final int REQUEST_CODE_SIGN_IN = 0;
+    public static final int REQUEST_CODE_OPENING = 1;
+    public static final int REQUEST_CODE_CREATION = 2;
+    public static final int REQUEST_CODE_PERMISSIONS = 2;
+    private boolean isBackup = true;
+    private MainActivity activity;
+    private RemoteBackup remoteBackup;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        remoteBackup = new RemoteBackup(this);
         //set the OnClickListeners
         //set the OnClickListeners
         findViewById(R.id.fab_text).setOnClickListener(this);
@@ -90,7 +112,7 @@ public class MainActivity extends AppCompatActivity
                 TextView text = (TextView) rowView.findViewById(R.id.item_name);
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_NAME));
                 if (name.length() >= 30) {
-                    text.setText(name.substring(0,27) + "...");
+                    text.setText(name.substring(0, 27) + "...");
                 } else {
                     text.setText(name);
                 }
@@ -123,7 +145,7 @@ public class MainActivity extends AppCompatActivity
                 TextView text = (TextView) view.findViewById(R.id.item_name);
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_NAME));
                 if (name.length() >= 30) {
-                    text.setText(name.substring(0,27) + "...");
+                    text.setText(name.substring(0, 27) + "...");
                 } else {
                     text.setText(name);
                 }
@@ -201,7 +223,7 @@ public class MainActivity extends AppCompatActivity
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.main_cab, menu);
                 //Temporary fix, otherwise statusbar would be black
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
                     // or Color.TRANSPARENT or your preferred color
                 }
@@ -229,7 +251,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 //Temporary fix, otherwise statusbar would be black
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
                     // or Color.TRANSPARENT or your preferred color
                 }
@@ -293,6 +315,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplication(), AboutActivity.class));
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -310,6 +333,17 @@ public class MainActivity extends AppCompatActivity
             updateList();
         } else if (id == R.id.nav_manage_categories) {
             startActivity(new Intent(getApplication(), ManageCategoriesActivity.class));
+        } else if (id == R.id.nav_backup) {
+           // remoteBackup.signOut();
+            //remoteBackup.revokeAccess();
+
+            isBackup = true;
+           remoteBackup.connectToDrive(isBackup);
+        } else if (id == R.id.nav_import) {
+
+
+            isBackup = false;
+            remoteBackup.connectToDrive(isBackup);
         } else {
             selectedCategory = id;
             updateList();
@@ -351,7 +385,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.fab_editImage:
-                startActivity(new Intent(getApplication(), PhotoEditor.class));
+                startActivity(new Intent(getApplication(), MainActivity44.class));
                 fabMenu.collapseImmediately();
                 break;
         }
@@ -367,7 +401,7 @@ public class MainActivity extends AppCompatActivity
         menuInflater.inflate(R.menu.activity_main_drawer, navMenu);
         //Get the rest from the database
         Cursor c = DbAccess.getCategories(getBaseContext());
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             String name = c.getString(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_NAME));
             int id = c.getInt(c.getColumnIndexOrThrow(DbContract.CategoryEntry.COLUMN_ID));
             navMenu.add(R.id.drawer_group2, id, Menu.NONE, name).setIcon(R.drawable.ic_label_black_24dp);
@@ -380,11 +414,11 @@ public class MainActivity extends AppCompatActivity
         CursorAdapter adapter = (CursorAdapter) notesList.getAdapter();
         if (selectedCategory == -1) { //show all
             String selection = DbContract.NoteEntry.COLUMN_TRASH + " = ? AND " + DbContract.NoteEntry.COLUMN_TYPE + "!=?";
-            String[] selectionArgs = { "0","6" };
+            String[] selectionArgs = {"0", "6"};
             adapter.changeCursor(DbAccess.getCursorAllNotes(getBaseContext(), selection, selectionArgs));
         } else {
             String selection = DbContract.NoteEntry.COLUMN_CATEGORY + " = ? AND " + DbContract.NoteEntry.COLUMN_TRASH + " = ?";
-            String[] selectionArgs = { String.valueOf(selectedCategory), "0" };
+            String[] selectionArgs = {String.valueOf(selectedCategory), "0"};
             adapter.changeCursor(DbAccess.getCursorAllNotes(getBaseContext(), selection, selectionArgs));
         }
     }
@@ -394,23 +428,78 @@ public class MainActivity extends AppCompatActivity
         CursorAdapter adapter = (CursorAdapter) notesList.getAdapter();
         if (selectedCategory == -1) { //show all
             String selection = DbContract.NoteEntry.COLUMN_TRASH + " = ?";
-            String[] selectionArgs = { "0" };
+            String[] selectionArgs = {"0"};
             adapter.changeCursor(DbAccess.getCursorAllNotesAlphabetical(getBaseContext(), selection, selectionArgs));
         } else {
             String selection = DbContract.NoteEntry.COLUMN_CATEGORY + " = ? AND " + DbContract.NoteEntry.COLUMN_TRASH + " = ?";
-            String[] selectionArgs = { String.valueOf(selectedCategory), "0" };
+            String[] selectionArgs = {String.valueOf(selectedCategory), "0"};
             adapter.changeCursor(DbAccess.getCursorAllNotesAlphabetical(getBaseContext(), selection, selectionArgs));
         }
     }
 
-    private void deleteSelectedItems(){
+    private void deleteSelectedItems() {
         ListView notesList = (ListView) findViewById(R.id.notes_list);
         CursorAdapter adapter = (CursorAdapter) notesList.getAdapter();
         SparseBooleanArray checkedItemPositions = notesList.getCheckedItemPositions();
-        for (int i=0; i < checkedItemPositions.size(); i++) {
-            if(checkedItemPositions.valueAt(i)) {
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
                 DbAccess.trashNote(getBaseContext(), (int) (long) adapter.getItemId(checkedItemPositions.keyAt(i)));
             }
         }
     }
+
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch (requestCode) {
+
+            case REQUEST_CODE_SIGN_IN:
+                Log.i(TAG, "Sign in request code");
+                // Called after user is signed in.
+                if (resultCode == RESULT_OK) {
+                    remoteBackup.connectToDrive(isBackup);
+                }
+                break;
+
+            case REQUEST_CODE_CREATION:
+                // Called after a file is saved to Drive.
+                if (resultCode == RESULT_OK) {
+                    Log.i(TAG, "Backup successfully saved.");
+                    Toast.makeText(this, "Backup successufly loaded!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case REQUEST_CODE_OPENING:
+                if (resultCode == RESULT_OK) {
+                    DriveId driveId = data.getParcelableExtra(
+                            OpenFileActivityOptions.EXTRA_RESPONSE_DRIVE_ID);
+                    remoteBackup.mOpenItemTaskSource.setResult(driveId);
+                } else {
+                    remoteBackup.mOpenItemTaskSource.setException(new RuntimeException("Unable to open file"));
+                }
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

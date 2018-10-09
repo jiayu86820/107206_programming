@@ -18,5 +18,9 @@
             android:summary="@string/settings_font_size_sum"
             android:entries="@array/font_size_entries"
             android:entryValues="@array/font_size_values" />
+
+
+
+
     </PreferenceCategory>
 </PreferenceScreen>

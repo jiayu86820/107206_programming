@@ -98,9 +98,9 @@
 
         <activity android:name=".KeepNoteBridge" />
         <activity android:name=".MainActivity33" />
-        <activity android:name=".PhotoEditor" />
+        <activity android:name=".MainActivity44" />
         <activity android:name=".KeepNoteBridgeTag" />
-        <activity android:name=".AddPhotoActivity" android:parentActivityName=".code_old.MainActivity" />
+        <activity android:name=".MainActivity3" android:parentActivityName=".code_old.MainActivity" />
         <activity android:name=".event_detail" />
         <activity android:name=".PhotoNoteActivity" />
         <activity android:name=".FindTagFragment" />

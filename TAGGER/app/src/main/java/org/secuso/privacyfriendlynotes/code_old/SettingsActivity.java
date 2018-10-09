@@ -1,7 +1,11 @@
 package org.secuso.privacyfriendlynotes.code_old;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import org.secuso.privacyfriendlynotes.R;
 
@@ -15,5 +19,16 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+
+    }
+
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
+                                         Preference preference) {
+        // TODO Auto-generated method stub
+        if(preference.getKey().equals("checkbox")){
+            Log.i("itchq", "checkbox");
+        }
+        return true;
     }
 }

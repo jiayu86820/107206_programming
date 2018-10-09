@@ -172,7 +172,85 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
         loadActivity(false);
     }
 
-    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (edit){
+            getMenuInflater().inflate(R.menu.text, menu);
+            MenuItem item = menu.findItem(R.id.action_share);
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+            setShareIntent();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_reminder);
+        if (hasAlarm) {
+            item.setIcon(R.drawable.ic_alarm_on_white_24dp);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        setShareIntent();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_reminder) {
+            //open the schedule dialog
+            final Calendar c = Calendar.getInstance();
+            if (hasAlarm) {
+                //ask whether to delete or update the current alarm
+                PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.action_reminder));
+                popupMenu.inflate(R.menu.reminder);
+                popupMenu.setOnMenuItemClickListener(this);
+                popupMenu.show();
+            } else {
+                //create a new one
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dpd = new DatePickerDialog(CalenderActivity.this, this, year, month, day);
+                dpd.getDatePicker().setMinDate(c.getTimeInMillis());
+                dpd.show();
+            }
+            return true;
+        } else if (id == R.id.action_save) {
+            if (ContextCompat.checkSelfPermission(CalenderActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(CalenderActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                    ActivityCompat.requestPermissions(CalenderActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE_EXTERNAL_STORAGE);
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(CalenderActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE_EXTERNAL_STORAGE);
+                }
+            } else {
+                saveToExternalStorage();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
