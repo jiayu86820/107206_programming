@@ -40,7 +40,7 @@ public class TakePhotoFragment extends Fragment implements View.OnClickListener{
             case R.id.button2:
                 //startActivity(new Intent(getActivity(), MainActivity33.class));
                 //getActivity().finish();
-                startActivity(new Intent(getActivity(), PhotoNoteActivity.class));
+                startActivity(new Intent(getActivity(), MainActivity3.class));
                 getActivity().finish();
         }
     }

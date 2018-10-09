@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +14,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -46,19 +48,46 @@ import android.widget.Toast;
 
 import org.secuso.privacyfriendlynotes.code_old.DbAccess;
 import org.secuso.privacyfriendlynotes.code_old.DbContract;
+import org.secuso.privacyfriendlynotes.code_old.MainActivity;
 import org.secuso.privacyfriendlynotes.code_old.ManageCategoriesActivity;
 import org.secuso.privacyfriendlynotes.code_old.NotificationService;
 import org.secuso.privacyfriendlynotes.code_old.Preferences;
 import org.secuso.privacyfriendlynotes.code_old.SettingsActivity;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import org.secuso.privacyfriendlynotes.code_old.DbAccess;
+import org.secuso.privacyfriendlynotes.code_old.DbContract;
+import org.secuso.privacyfriendlynotes.code_old.DbOpenHelper;
+import org.secuso.privacyfriendlynotes.code_old.MainActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class PhotoNoteActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, PopupMenu.OnMenuItemClickListener {
     public static final String EXTRA_ID = "org.secuso.privacyfriendlynotes.ID";
@@ -66,7 +95,7 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
     private static final int REQUEST_CODE_EXTERNAL_STORAGE = 1;
     final int REQUEST_CODE_GALLERY = 999;
 
-    EditText etName,etContent;
+    EditText etName;
     EditText etTag;
 
     Spinner spinner;
@@ -93,14 +122,12 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
 
         etTag=(EditText)findViewById(R.id.etTag);
         etName = (EditText) findViewById(R.id.etName);
-        etContent=(EditText)findViewById(R.id.etContent);
         imgView=(ImageView)findViewById(R.id.abc33);
         spinner = (Spinner) findViewById(R.id.spinner_category);
 
         findViewById(R.id.btn_cancel).setOnClickListener(this);
         findViewById(R.id.btn_delete).setOnClickListener(this);
         findViewById(R.id.btn_save).setOnClickListener(this);
-        imgView.setImageResource(R.drawable.addimage);
         imgView.setOnClickListener(this);
 
 
@@ -154,18 +181,14 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             noteCursor = DbAccess.getNote(getBaseContext(), id);
             noteCursor.moveToFirst();
-
             byte[] pic = noteCursor.getBlob(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_PHOTO));
             etName.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_NAME)));
-            etContent.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_CONTENT)));
             etTag.setText(noteCursor.getString(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_TAG)));
-            currentCat = noteCursor.getInt(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_CATEGORY));
             Bitmap bitmap = BitmapFactory.decodeByteArray(pic, 0, pic.length);
 
             imgView.setImageBitmap(bitmap);
-
             //find the current category and set spinner to that
-
+            currentCat = noteCursor.getInt(noteCursor.getColumnIndexOrThrow(DbContract.NoteEntry.COLUMN_CATEGORY));
 
             for (int i = 0; i < adapter.getCount(); i++){
                 c.moveToPosition(i);
@@ -322,18 +345,12 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
 
     private void updateNote(){
         fillNameIfEmpty();
-        DbAccess.updateNote2(getBaseContext(), id, etName.getText().toString(), etContent.getText().toString(), imageViewToByte(imgView),etTag.getText().toString(), currentCat);
+        DbAccess.updateNote2(getBaseContext(), id, etName.getText().toString(),  MainActivity3.imageViewToByte(imgView),etTag.getText().toString(), currentCat);
         Toast.makeText(getApplicationContext(), R.string.toast_updated, Toast.LENGTH_SHORT).show();
     }
 
     private void saveNote(){
         fillNameIfEmpty();
-        id = DbAccess.addNote2( getBaseContext(),
-                etName.getText().toString(),
-                etTag.getText().toString(),
-                etContent.getText().toString(),
-                imageViewToByte(imgView),
-                DbContract.NoteEntry.TYPE_PHOTO);
 
         Toast.makeText(getApplicationContext(), R.string.toast_saved, Toast.LENGTH_SHORT).show();
     }
@@ -528,13 +545,11 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode==REQUEST_CODE_GALLERY){
-
             Uri uri = data.getData();
 
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
                 imgView.setImageBitmap(bitmap);
 
             } catch (FileNotFoundException e) {
@@ -598,13 +613,6 @@ public class PhotoNoteActivity extends AppCompatActivity implements View.OnClick
 
             mShareActionProvider.setShareIntent(sendIntent);
         }
-    }
-    public static byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
     }
 
 }

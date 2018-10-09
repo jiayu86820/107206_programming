@@ -79,21 +79,19 @@ public class DbAccess {
         db.close();
         return id;
     }
-    public static int addNote2(Context c,String name, String tag, String content, byte[] photo,int type){
+    public static void addNote2(Context c, String tag, String content, byte[] photo,int type){
         DbOpenHelper dbHelper = new DbOpenHelper(c);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(NoteEntry.COLUMN_NAME, name);
-        values.put(NoteEntry.COLUMN_CONTENT, content);
+        values.put(NoteEntry.COLUMN_NAME, content);
         values.put(NoteEntry.COLUMN_TAG,tag);
         values.put(NoteEntry.COLUMN_PHOTO,photo);
         values.put(NoteEntry.COLUMN_TYPE, type);
 
-        int id = (int)(long)db.insert(NoteEntry.TABLE_NAME, null, values);
+       db.insert(NoteEntry.TABLE_NAME, null, values);
         db.close();
-        return id;
     }
 
     /**
@@ -119,13 +117,12 @@ public class DbAccess {
         db.update(NoteEntry.TABLE_NAME, values, selection, selectionArgs);
         db.close();
     }
-    public static void updateNote2(Context c, int id, String name, String content, byte[] photo,String tag, int category) {
+    public static void updateNote2(Context c, int id, String name, byte[] photo,String tag, int category) {
         DbOpenHelper dbHelper = new DbOpenHelper(c);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(NoteEntry.COLUMN_NAME, name);
-        values.put(NoteEntry.COLUMN_CONTENT, content);
         values.put(NoteEntry.COLUMN_PHOTO, photo);
         values.put(NoteEntry.COLUMN_TAG, tag);
         values.put(NoteEntry.COLUMN_CATEGORY, category);

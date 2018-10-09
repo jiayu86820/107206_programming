@@ -104,5 +104,7 @@
     <string name="about_privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under GPLv3. Images copyright TU Darmstadt and Google Inc.</string>
     <string name="about_more_info">關於更多</string>
 
+    <string name="Actslikeabutton">登出雲端帳號</string>
+
 
 </resources>
