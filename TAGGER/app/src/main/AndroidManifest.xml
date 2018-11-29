@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.secuso.privacyfriendlynotes">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".code_old.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".code_old.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".code_old.TextNoteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_textnote"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.ChecklistNoteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_checklistnote"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.ManageCategoriesActivity"
+            android:label="@string/title_manage_categories"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.RecycleActivity"
+            android:label="@string/title_recycle_bin"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.AudioNoteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_audionote"
+            android:parentActivityName=".code_old.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".code_old.SketchActivity"
+            android:label="@string/title_sketchnote"
+            android:parentActivityName=".code_old.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".code_old.SettingsActivity"
+            android:label="@string/title_settings"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.HelpActivity"
+            android:label="@string/title_help"
+            android:parentActivityName=".code_old.MainActivity" />
+        <activity
+            android:name=".code_old.AboutActivity"
+            android:label="@string/title_about"
+            android:parentActivityName=".code_old.MainActivity" />
+
+
+        <service android:name=".code_old.NotificationService" />
+
+        <receiver android:name=".code_old.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!-- Broadcast receiver -->
+        <receiver android:name=".AlarmManagerBroadcastReceiver">
+            <intent-filter>
+
+                <!-- 使用Action名稱設定接收的廣播事件 -->
+                <action android:name="net.macdidi.broadcast01.action.MYBROADCAST02" />
+            </intent-filter>
+        </receiver>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="org.secuso.privacyfriendlynotes"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider_paths" />
+        </provider>
+
+        <activity android:name=".KeepNoteBridge" />
+        <activity android:name=".MainActivity33" />
+        <activity android:name=".PhotoEditor" />
+        <activity android:name=".KeepNoteBridgeTag" />
+        <activity android:name=".AddPhotoActivity" android:parentActivityName=".code_old.MainActivity" />
+        <activity android:name=".event_detail" />
+        <activity android:name=".PhotoNoteActivity" />
+        <activity android:name=".FindTagFragment" />
+        <activity android:name=".insert_event" />
+        <activity android:name=".CalenderActivity" />
+        <activity android:name=".calender_Show" />
+        <activity android:name=".PlatformFragment" />
+        <activity android:name=".SharePlatformFragment">
+         <intent-filter>
+            <action android:name="android.intent.action.SEND" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="image/*" />
+         </intent-filter>
+         <intent-filter>
+            <action android:name="android.intent.action.SEND" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="text/plain" />
+         </intent-filter>                    
+          <intent-filter>
+               <action android:name="android.intent.action.SEND_MULTIPLE" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <data android:mimeType="image/*" />
+          </intent-filter>
+        <intent-filter>
+               <action android:name="android.intent.action.SEND_MULTIPLE" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <data android:mimeType="audio/*" />
+           </intent-filter>
+        </activity>
+        <!--选择相册图片Activity-->
+        <activity
+            android:name="com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--图片编辑Activity-->
+        <activity
+            android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+
+
+    </application>
+
+</manifest>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="261dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="91dp"
+            android:ems="10"
+            android:hint="(請輸入文字標記或關鍵字搜尋)"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/btnText"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/editText2"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search" />
+
+        <Button
+            android:id="@+id/btnMic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="189dp"
+            android:background="@drawable/voice" />
+
+        <Button
+            android:id="@+id/btnPic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignEnd="@+id/editText2"
+            android:layout_alignTop="@+id/btnMic"
+            android:background="@drawable/scan" />
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

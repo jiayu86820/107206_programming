@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">TAGGER</string>
+    <string name="app_name_long">TAAGER_MASTER</string>
+    <string name="default_category">預設</string>
+
+    <string name="title_manage_categories">分類</string>
+    <string name="title_textnote">文字筆記</string>
+    <string name="title_checklistnote">選項清單</string>
+    <string name="title_audionote">語音筆記</string>
+    <string name="title_sketchnote">畫圖筆記</string>
+    <string name="title_recycle_bin">回收桶</string>
+    <string name="title_settings">設定</string>
+    <string name="title_help">幫助</string>
+    <string name="title_about">關於</string>
+    <string name="save_path">路徑</string>
+
+    <string name="navigation_drawer_open">開啟抽屜!</string>
+    <string name="navigation_drawer_close">關閉抽屜!</string>
+
+    <string name="nav_all">顯示所有筆記</string>
+    <string name="nav_trash">回收桶</string>
+    <string name="nav_manage_categories">管理分類</string>
+
+    <string name="action_sort_alphabetical">排序(A~Z)</string>
+    <string name="action_settings">設定</string>
+    <string name="action_help">幫助</string>
+    <string name="action_about">關於</string>
+    <string name="action_reminder">設定提醒</string>
+    <string name="action_reminder_edit">編輯提醒</string>
+    <string name="action_reminder_delete">刪除提醒</string>
+
+    <string name="action_cancel">取消</string>
+    <string name="action_delete">刪除</string>
+    <string name="action_delete_all">刪除全部</string>
+    <string name="action_save">儲存</string>
+    <string name="action_update">更新</string>
+    <string name="action_add">增加</string>
+    <string name="action_share">分享</string>
+
+    <string name="hint_name">標題</string>
+    <string name="hint_note">內文</string>
+    <string name="hint_new_item">新選項</string>
+
+    <string name="toast_canceled">未儲存取消</string>
+    <string name="toast_saved">已完成儲存!</string>
+    <string name="toast_updated">已更新!</string>
+    <string name="toast_category_exists">分類已經存在</string>
+    <string name="toast_alarm_scheduled">通知排程 %1s</string>
+    <string name="toast_need_permission_audio">此功能需存取麥克風權限</string>
+    <string name="toast_need_permission_write_external">此功能需存取外部記憶體權限</string>
+    <string name="toast_external_storage_not_mounted">發生錯誤，寫入失敗!e</string>
+    <string name="toast_file_exported_to">輸出文字檔至 %1s</string>
+
+    <string name="dialog_delete_title">刪除 %1s?</string>
+    <string name="dialog_delete_message">確定要刪除 %1s?</string>
+    <string name="dialog_trash_title">移動至回收桶</string>
+    <string name="dialog_trash_message">筆記將會被移至回收桶。您可以復原或是永久刪除他，但是提醒無法被還原。</string>
+    <string name="dialog_save_title">刪除選擇的項目</string>
+    <string name="dialog_save_message">Checked items will be deleted on updating or saving the note.</string>
+    <string name="dialog_restore_title">復原或刪除 %1s?</string>
+    <string name="dialog_restore_message">確定要復原刪除 %1s?</string>
+    <string name="dialog_need_category_title">沒有分類</string>
+    <string name="dialog_need_category_message">你必須至少創建一種分類</string>
+    <string name="dialog_welcome">歡迎使用TAGGER!</string>
+    <string name="dialog_help">進入筆記平台</string>
+    <string name="dialog_welcome_text">快速創建筆記，並且透過標記將筆記快速找出!下方為筆記分享平台，將自己的筆記分享給他人喔!啾咪</string>
+    <string name="dialog_ok" translatable="false">關閉</string>
+
+    <string name="dialog_option_delete">刪除</string>
+    <string name="dialog_option_restore">復原</string>
+
+    <string name="fab_text">記筆記</string>
+    <string name="fab_audio">語音筆記</string>
+    <string name="fab_checklist">項目清單</string>
+    <string name="fab_sketch">圖畫筆記</string>
+
+    <string name="note_standardname">預設標題 %1s</string>
+
+    <string name="tv_category">分類:</string>
+
+    <string name="settings_general_heading">一般</string>
+    <string name="settings_del_notes_title">刪除分類中的筆記</string>
+    <string name="settings_del_notes_sum">刪除分類中的筆記並將分類刪除</string>
+    <string name="settings_use_custom_font_size_title">自訂字體大小</string>
+    <string name="settings_use_custom_font_size_sum">使用自訂字體大小編輯筆記</string>
+    <string name="settings_font_size_title">字體大小</string>
+    <string name="settings_font_size_sum">點擊此處更換字體大小</string>
+
+    <string name="help_overview_heading">概述</string>
+    <string name="help_intro">歡迎來到幫助頁面. TAGGER透過SQLite建置能離線操作的筆記功能，並且能透過自定義的標記，將筆記找出!</string>
+    <string name="help_privacy_heading">基本介紹</string>
+    <string name="help_perm_receive_boot_title">文字筆記</string>
+    <string name="help_perm_receive_boot_sum">打字就對了</string>
+    <string name="help_perm_record_audio_title">語音筆記</string>
+    <string name="help_perm_record_audio_sum">需要授權存取聲音權限</string>
+    <string name="help_perm_write_external_title">照片筆記</string>
+    <string name="help_perm_write_external_sum">需授權存取相簿讀寫權限</string>
+
+    <string name="about_version_number">版本99.999</string>
+    <string name="about_author">作者 </string>
+    <string name="about_author_names" translatable="false">TAGGER TEAM</string>
+    <string name="about_author_contributors">感謝開源來自org.seso</string>
+    <string name="about_affiliation">In affiliation with</string>
+    <string name="about_privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under GPLv3. Images copyright TU Darmstadt and Google Inc.</string>
+    <string name="about_more_info">關於更多</string>
+
+
+</resources>

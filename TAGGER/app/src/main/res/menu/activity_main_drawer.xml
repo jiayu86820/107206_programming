@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title=" 我的筆記管理">
+        <menu>
+            <item
+            android:id="@+id/nav_all"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/nav_all"/>
+            <item
+                android:id="@+id/nav_manage_categories"
+                android:icon="@drawable/ic_device_hub_black_24dp"
+                android:title="@string/nav_manage_categories"/>
+            <item
+                android:id="@+id/nav_trash"
+                android:icon="@drawable/ic_delete_black_24dp"
+                android:title="@string/nav_trash"/>
+        </menu>
+
+    </item>
+
+    <item android:title=" 交流與備份">
+        <menu>
+    <group android:checkableBehavior="single"
+        android:id="@+id/drawer_group">
+        <item
+        android:id="@+id/nav_platform"
+        android:icon="@drawable/ic_comment_black_24dp"
+        android:title="平台"/>
+        <item
+            android:id="@+id/nav_backup"
+            android:icon="@drawable/ic_content_copy_black_24dp"
+            android:title="備份筆記"/>
+        <item
+            android:id="@+id/nav_import"
+            android:icon="@drawable/ic_autorenew_black_24dp"
+            android:title="恢復筆記"/>
+
+    </group>
+        </menu>
+    </item>
+
+    <item android:title="分類選項 ">
+        <menu>
+            <group
+                android:checkableBehavior="single"
+                android:id="@+id/drawer_group2">
+                <!-- Filled dynamically in buildDrawerMenu() -->
+            </group>
+        </menu>
+    </item>
+
+
+</menu>
